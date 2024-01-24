@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\DTO\Users\CreateUserDTO;
+use App\DTO\Users\EditUserDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\EditUserRequest;
 use App\Http\Requests\Api\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository;
@@ -58,9 +60,14 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EditUserRequest $request, string $id)
     {
-        //
+        $edit = $this->userRepository->update(new EditUserDTO(... [$id, ... $request->validated()]));
+        if (!$edit) {
+            return response()->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json(['message' => 'User updated with success']);
     }
 
     /**
