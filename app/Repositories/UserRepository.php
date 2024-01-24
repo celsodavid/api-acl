@@ -28,4 +28,9 @@ class UserRepository
 
         return $this->user->create($data);
     }
+
+    public function findById(string $id): ?User
+    {
+        return $this->user->find($id);
+    }
 }
