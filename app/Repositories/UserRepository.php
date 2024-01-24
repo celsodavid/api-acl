@@ -50,4 +50,13 @@ class UserRepository
 
         return $user->update($data);
     }
+
+    public function delete(string $id): bool
+    {
+        if (!$user = $this->findById($id)) {
+            return false;
+        }
+
+        return $user->delete();
+    }
 }
