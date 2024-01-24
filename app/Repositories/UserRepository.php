@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\DTO\Users\CreateUserDTO;
-use App\DTO\Users\EditUserDTO;
+use App\DTO\Users\CreatePermissionDTO;
+use App\DTO\Users\EditPermissionDTO;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -22,7 +22,7 @@ class UserRepository
         })->paginate($totalPerPage, ['*'], 'page', $page);
     }
 
-    public function createNew(CreateUserDTO $dto): User
+    public function createNew(CreatePermissionDTO $dto): User
     {
         $data = (array) $dto;
         $data['password'] = bcrypt($data['password']);
@@ -35,7 +35,7 @@ class UserRepository
         return $this->user->find($id);
     }
 
-    public function update(EditUserDTO $dto): bool
+    public function update(EditPermissionDTO $dto): bool
     {
         if (!$user = $this->findById($dto->id)) {
             return false;
