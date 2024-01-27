@@ -64,4 +64,15 @@ class UserRepository
     {
         return $this->user->where('email', $email)->first();
     }
+
+    public function syncPermissionOfUser(string $id, array $permissions): bool
+    {
+        if (!$user = $this->findById($id)) {
+            return false;
+        }
+
+        $user->permissions()->sync($permissions);
+
+        return true;
+    }
 }
