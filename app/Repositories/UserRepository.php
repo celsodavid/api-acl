@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\EditUserDTO;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository
@@ -19,7 +20,9 @@ class UserRepository
             if ($filter !== '') {
                 $query->where('name', 'like', "%{$filter}%");
             }
-        })->paginate($totalPerPage, ['*'], 'page', $page);
+        })
+        // ->with(['permissions'])
+        ->paginate($totalPerPage, ['*'], 'page', $page);
     }
 
     public function createNew(CreateUserDTO $dto): User
@@ -74,5 +77,10 @@ class UserRepository
         $user->permissions()->sync($permissions);
 
         return true;
+    }
+
+    public function getPermissionsByUserId(string $user): Collection
+    {
+        return $this->findById($user)?->permissions()->get();
     }
 }

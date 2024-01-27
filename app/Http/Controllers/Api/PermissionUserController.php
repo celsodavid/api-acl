@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PermissionResource;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,5 +22,16 @@ class PermissionUserController extends Controller
         }
 
         return response()->json(['message' => 'Permissions synced'], Response::HTTP_OK);
+    }
+
+    public function getPermissionsOfUser(string $id)
+    {
+        if (!$this->userRepository->findById($id)) {
+            return response()->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $permissions = $this->userRepository->getPermissionsByUserId($id);
+
+        return PermissionResource::collection($permissions);
     }
 }
