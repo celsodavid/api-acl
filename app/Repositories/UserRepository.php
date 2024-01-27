@@ -21,7 +21,7 @@ class UserRepository
                 $query->where('name', 'like', "%{$filter}%");
             }
         })
-        // ->with(['permissions'])
+        ->with(['permissions'])
         ->paginate($totalPerPage, ['*'], 'page', $page);
     }
 
